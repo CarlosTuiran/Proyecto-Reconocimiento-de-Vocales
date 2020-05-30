@@ -26,9 +26,9 @@ for s=1:n_pal
  %<PROCESADO DE LOS DATOS>
  %...
  %Guardar archivo
- archivo=['dataVoice\' ...
-num2str(n) '_' num2str(s) '.wav'];
- audiowrite(archivo,y,Fs);
+ archivo=['C:\Users\USUS\Documents\Universidad\IA\Proyecto IA Reconocimiento de Voz\Proyecto-Reconocimiento-de-Vocales\dataVoice\' ...
+num2str(n) '\5_' num2str(s)];
+ audiowrite(archivo,y,Fs)
  end
 end
  delete(v); clear v;
