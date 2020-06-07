@@ -61,19 +61,19 @@ for j=Id22:1:length(E)
 end
 PX=x2(Id1:Id11); %PX inicio y final de la potencia %
 xiyf=x(Id1:Id11); %xin0 señal acotada %
-subplot(2,1,1);plot(x);
-subplot(2,1,2);plot(PX);
+%subplot(2,1,1);plot(x);
+%subplot(2,1,2);plot(PX);
 
 N=15;
 c1=xiyf;
 [lpcc1,ga2]=lpc(c1,N);
-t=2:11;
+t=2:16;
 c11=(abs(lpcc1(:,t)));
 N=16; %neuronas de entrada (incluido el BIAS)
 L=35; %neuronas de la capa oculta (incluido el BIAS)
 M=6; %neuronas de salida
 NT=1; %patrones de entrenamiento
-epsilon=0.005; %error cuadrático medio requerido
+epsilon=0.004; %error cuadrático medio requerido
 PE=[c11];
 fidfun=fopen('Wij.dat','r');
 Ws=fscanf(fidfun,'%f',[L-1,inf]);
@@ -92,21 +92,34 @@ for i=1:1
 	fprintf(1,'Salida de la Red: %d %d %d %d %d %d \n\n',Y(1),Y(2),Y(3),Y(4),Y(5),Y(6));
 end
 % Respuestas a la evaluación %
-if (Y~=[1 -1 -1 -1 -1 -1])|(Y~=[-1 1 -1 -1 -1 -1] | |(Y~=[-1 -1 1 -1 -1 -1] |(Y~=[-1 -1 -1 1 -1 -1] |(Y~=[-1 -1 -1 -1 1 -1]);
-	fprintf('error vocal no identificada');
-end
+%if (Y~=[1 -1 -1 -1 -1 -1])|| (Y~=[-1 1 -1 -1 -1 -1]) || (Y~=[-1 -1 1 -1 -1 -1]) || (Y~=[-1 -1 -1 1 -1 -1]) || (Y~=[-1 -1 -1 -1 1 -1]);
+Exito=0;
+%end
 if (Y==[1 -1 -1 -1 -1 -1]);
 	fprintf('Vocal A');
+	Exito=1;
+
 end
 if (Y==[-1 1 -1 -1 -1 -1]);
 	fprintf('Vocal E');
+	Exito=1;
+
 end
 if (Y==[-1 -1 1 -1 -1 -1]);
 	fprintf('Vocal I');
+	Exito=1;
+
 end
 if (Y==[-1 -1 -1 1 -1 -1]);
 	fprintf('Vocal O');
+	Exito=1;
+
 end
 if (Y==[-1 -1 -1 -1 1 -1]);
 	fprintf('Vocal U');
+	Exito=1;
+
+end
+if Exito==0
+	fprintf('error vocal no identificada');
 end

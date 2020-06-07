@@ -2,21 +2,21 @@ clear all;
 clc
 N=15;
 % Recuperando el banco de datos %
-[a1,fr1]=audioread ('1_1');
-[a2,fr2]=audioread ('1_2');
-[a3,fr3]=audioread ('1_3');
-[e1,fr1]=audioread ('2_1');
-[e2,fr2]=audioread ('2_2');
-[e3,fr3]=audioread ('2_3');
-[i1,fr1]=audioread ('3_1');
-[i2,fr2]=audioread ('3_2');
-[i3,fr3]=audioread ('3_3');
-[o1,fr1]=audioread ('4_1');
-[o2,fr2]=audioread ('4_2');
-[o3,fr3]=audioread ('4_3');
-[u1,fr1]=audioread ('5_1');
-[u2,fr2]=audioread ('5_2');
-[u3,fr3]=audioread ('5_3');
+[a1,fr1]=audioread ('dataVoice/1_1.wav');
+[a2,fr2]=audioread ('dataVoice/1_2.wav');
+[a3,fr3]=audioread ('dataVoice/1_3.wav');
+[e1,fr1]=audioread ('dataVoice/2_1.wav');
+[e2,fr2]=audioread ('dataVoice/2_2.wav');
+[e3,fr3]=audioread ('dataVoice/2_3.wav');
+[i1,fr1]=audioread ('dataVoice/3_1.wav');
+[i2,fr2]=audioread ('dataVoice/3_2.wav');
+[i3,fr3]=audioread ('dataVoice/3_3.wav');
+[o1,fr1]=audioread ('dataVoice/4_1.wav');
+[o2,fr2]=audioread ('dataVoice/4_2.wav');
+[o3,fr3]=audioread ('dataVoice/4_3.wav');
+[u1,fr1]=audioread ('dataVoice/5_1.wav');
+[u2,fr2]=audioread ('dataVoice/5_2.wav');
+[u3,fr3]=audioread ('dataVoice/5_3.wav');
 
 
 
@@ -38,7 +38,7 @@ N=15;
 [lpcu3,gu3]=lpc(u3,N);
 
 
-t=2:11;
+t=2:16;
 pa1=(abs(lpca1(:,t)));
 pa2=(abs(lpca2(:,t)));
 pa3=(abs(lpca3(:,t)));
@@ -62,16 +62,16 @@ L=35; % neuronas de la capa oculta (incluido el BIAS) %
 M=6; % neuronas de salida %
 NT=15; % patrones de entrenamiento %
 NI=100000; % # maximo de iteraciones (epochs) %
-epsilon=0.005; % error cuadratico medio requerido %
+epsilon=0.004; % error cuadratico medio requerido %
 Ws=(2*rand(N,L-1))-1;
 Vs=(2*rand(L,M))-1;
 
 % Datos de entrenamiento %
-PE=[pa1; pa2; pa2;
-pe1; pe2; pe2;
-pi1; pi2; pi2;
-po1; po2; po2;
-pu1; pu2; pu2;];
+PE=[pa1; pa2; pa3;
+pe1; pe2; pe3;
+pi1; pi2; pi3;
+po1; po2; po3;
+pu1; pu2; pu3;];
 % Salida deseada de cada uno %
 D=[
  1 -1 -1 -1 -1 -1;
@@ -105,7 +105,7 @@ for k=1:NI
 		end
 		X=[1.0,PE(i,:)]; %BIAS y patrones de entrenamiento %
 		%Calculo de salida de la red %
-		U_hat=X*Ws;
+		U_hat=X* Ws;
 		U=[1.0,f_nl(1,U_hat)]; %agrega BIAS %
 		Y_hat=U*Vs;
 		Y=f_nl(1,Y_hat);
@@ -140,18 +140,8 @@ end
 %disp(Vs);
 
 fidfun=fopen('Wij.dat','w');
-fprintf(fidfun,'%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f\n',Ws');
+fprintf(fidfun,'%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f\n',Ws');
 fclose(fidfun);
 fidfun=fopen('Vij.dat','w');
-fprintf(fidfun,'%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f
-	%6.4f %6.4f %6.4f %6.4f %6.4f\n',Vs');
+fprintf(fidfun,'%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f	%6.4f %6.4f %6.4f %6.4f\n',Vs');
 fclose(fidfun);

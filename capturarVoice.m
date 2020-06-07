@@ -86,10 +86,10 @@ for s=1:n_pal
 	 %...
 	 %Guardar archivo
 	archivo=['dataVoice\' ...
-		num2str(n) '_' num2str(s) '.wav'];
+		num2str(s) '_' num2str(n) '.wav'];
 	audiowrite(archivo,signalAcotada,Fs);
-	subplot(2,1,1);plot(x);
-	subplot(2,1,2);plot(PX);
+	%subplot(2,1,1);plot(x);
+	%subplot(2,1,2);plot(PX);
     input('Grabacion Finalizada enter para continuar');
 
 	end
