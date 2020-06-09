@@ -1,10 +1,11 @@
+function [rta, voice_x, voice_PX, voice_BD] =evaluarVoice()
 clc
 duration=2; %Tiempo duración de grabación
 Fs=16000; %Fs=16000Hz Frecuencia
 v = audiorecorder(Fs, 24, 1);
 v.StartFcn = 'disp(''   iniciando grabación'')';
 v.StopFcn = 'disp(''   terminando grabación'')';
-input('Enter para Empezar la Grabacion');
+%input('Enter para Empezar la Grabacion');
 recordblocking(v, duration);  %Inicio de adquisición
 y = v.getaudiodata();
 
@@ -90,36 +91,55 @@ for i=1:1
 	Y_hat=U*Vs;
 	Y=hardlims(f_nl(1,Y_hat));
 	fprintf(1,'Salida de la Red: %d %d %d %d %d %d \n\n',Y(1),Y(2),Y(3),Y(4),Y(5),Y(6));
+	[rta, voice_BD]=getRespuesta(Y);
+	voice_x=x;
+	voice_PX=PX;
+end
 end
 % Respuestas a la evaluación %
 %if (Y~=[1 -1 -1 -1 -1 -1])|| (Y~=[-1 1 -1 -1 -1 -1]) || (Y~=[-1 -1 1 -1 -1 -1]) || (Y~=[-1 -1 -1 1 -1 -1]) || (Y~=[-1 -1 -1 -1 1 -1]);
+function [rta, voiceBD] =getRespuesta(Y)
 Exito=0;
 %end
 if (Y==[1 -1 -1 -1 -1 -1]);
 	fprintf('Vocal A');
+	rta='Vocal A';
+	voiceBD=audioread ('dataVoice/1_1.wav');
 	Exito=1;
 
 end
 if (Y==[-1 1 -1 -1 -1 -1]);
 	fprintf('Vocal E');
+	rta='Vocal E';
+	voiceBD=audioread ('dataVoice/2_1.wav');
 	Exito=1;
 
 end
 if (Y==[-1 -1 1 -1 -1 -1]);
 	fprintf('Vocal I');
+	rta='Vocal I';
+	voiceBD=audioread ('dataVoice/3_1.wav');
 	Exito=1;
 
 end
 if (Y==[-1 -1 -1 1 -1 -1]);
 	fprintf('Vocal O');
+	rta='Vocal O';
+	voiceBD=audioread ('dataVoice/4_1.wav');
 	Exito=1;
 
 end
 if (Y==[-1 -1 -1 -1 1 -1]);
 	fprintf('Vocal U');
+	rta='Vocal U';
+	voiceBD=audioread ('dataVoice/5_1.wav');
 	Exito=1;
 
 end
 if Exito==0
 	fprintf('error vocal no identificada');
+	rta='error vocal no identificada';
+	voiceBD=0; 
 end
+end
+
